@@ -1,9 +1,14 @@
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.nio.File;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.Path;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+
 
 public class CodingGit {
     // first create InitalizeRepo method 
@@ -224,5 +229,35 @@ public class CodingGit {
         CodingGit.RemoveIndexFile();
         CodingGit.RemoveObjFolder();
         CodingGit.RemoveGitFolder();
+    }
+
+    public static String generateSHA1Hash(Path file) {
+        try{
+        // first convert all of file's content into bytes and put bytes into an array 
+        byte[] bytesOfFile = Files.readAllBytes(file);
+        // second hash all bytes 
+        MessageDigest SHA1 =  MessageDigest.getInstance("SHA-1");
+        byte[] hashedBytes = SHA1.digest(bytesOfFile); // hashes all the bytes and puts each part of hash into one index of array 
+        // third convert hash into hexadecimal 
+        //using helper method
+        String hexadecimalOfHash = hexademcialOfHash(hashedBytes);
+         return hexadecimalOfHash;
+    }   
+    catch (IOException e) {
+        return "error encountered";
+            
+    } catch (NoSuchAlgorithmException e) {
+        return "error encountered";
+    }
+
+    }
+
+    public static String hexademcialOfHash(byte[] byteArray) {
+        StringBuilder hexOfHash = new StringBuilder();
+        for (byte b : byteArray) {
+            hexOfHash.append(String.format("%02x", b));
+        }
+        return hexOfHash.toString();
+
     }
 }

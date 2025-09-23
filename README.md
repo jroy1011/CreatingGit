@@ -13,4 +13,9 @@ First, I used the Files.notExist() method on the git folder, objects folder, ind
 Then, I wrote some remove methods in the CodingGit class and put all those methods into one big RemoveStuff() method in the CodingGit class. I then called that RemoveStuff() method in the CodingGit class into my tester class and then tested if those things were actually removed by using the Files.notExist() method mentioned before. 
 Finally, I created a for loop that iterates 4 times. The loop first removes all the files, checks to see if they are removed using the Files.notExist() method, and then recreates them. After this is done for the fourth time, the Files.notExist() method is run to see if the files exist (they should exist).
 
-
+// creating hash function 
+in the generateSHA1HASH(Path file) method: first I used the java.nio.Files class to put all the bytes of the file's contents into a byte array 
+second, I imported the MessageDigest class so that I could create an object (in this case called SHA1) that could hash things like Sha-1 can 
+third, I used the digest() method to hash what was in the byte array and I put this content into a new array called hashedBytes. 
+I then created a helper method called hexadecimalOfHash that takes the hash just created and returns a hexadecimal version of it. 
+HexadecimalOfHash helper method: I had to use the internet to figure out how to do this. Essentially, I use String Builder and the .format() method as well as "%02x" to get a hexadecimal version of what has been hasehd 
