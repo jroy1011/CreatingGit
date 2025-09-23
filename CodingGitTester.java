@@ -65,6 +65,10 @@ public class CodingGitTester {
      if (Files.notExists(PathHEADLoc)) {
         System.out.println("HEAD file does not exist!");
     }
+    // testing SHA1 hash method 
+    String fileLOC = "\\home\\joyar\\HTCS_Projects\\CreatingGit\\testOfSHA1Hash.txt";
+    Path pathOfFile = Paths.get(fileLOC);
+    System.out.println(CodingGit.generateSHA1Hash(pathOfFile));
 
     }
 }
