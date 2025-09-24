@@ -69,6 +69,33 @@ public class CodingGitTester {
     String fileLOC = "\\home\\joyar\\HTCS_Projects\\CreatingGit\\testOfSHA1Hash.txt";
     Path pathOfFile = Paths.get(fileLOC);
     System.out.println(CodingGit.generateSHA1Hash(pathOfFile));
-
+    // testing CreateBlob 
+    //CodingGit.createBLOB(pathOfFile);
+    // Stretch challenges GP - 2.3.1
+    // progrmatically confirm that BLOB file exists in Objects folder 
+    Path BlobFilePath = CodingGit.createBLOB(pathOfFile);
+    if (Files.notExists(BlobFilePath)) {
+        System.out.println("Blob file is NOT in objects folder");
+    }
+    //Implement a method to reset the files used in your tester to repeatedly test again.
+    CodingGit.removeBLOB(BlobFilePath);
+    if (Files.notExists(BlobFilePath)) {
+        System.out.println("Blob file is NOT in objects folder");
+    }
+    // repeatedly testing 
+    for (int i = 0; i < 3; i++) {
+        CodingGit.createBLOB(pathOfFile);
+        if (Files.notExists(BlobFilePath)) {
+            System.out.println("Blob file is NOT in objects folder");
+        }
+        CodingGit.removeBLOB(BlobFilePath);
+        if (Files.notExists(BlobFilePath)) {
+            System.out.println("Blob file is NOT in objects folder");
+        }
+    }
+    System.out.println("Blob file should not be in objects folder:");
+    if (Files.notExists(BlobFilePath)) {
+        System.out.println("Blob file is NOT in objects folder");
+    }
     }
 }
