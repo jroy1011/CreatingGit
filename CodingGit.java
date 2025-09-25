@@ -5,6 +5,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.nio.file.Path;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -258,6 +259,37 @@ public class CodingGit {
             hexOfHash.append(String.format("%02x", b));
         }
         return hexOfHash.toString();
-
     }
+
+    public static Path createBLOB(Path file) {
+        // calculate SHA1 Hash of file & create a new file in the objects folder with the hash as its filename ad the content of that file 
+        String fileName = generateSHA1Hash(file);
+        String data = "";
+
+        String ogLocOfFile = Paths.get("").toAbsolutePath().toString() + "\\" + fileName;
+        Path PathOgLocOFFile = Paths.get(ogLocOfFile);
+
+        String DestinOfFile = Paths.get("").toAbsolutePath().toString() + "\\git\\objects\\" + fileName;
+        Path PathDestinOfFile = Paths.get(DestinOfFile);
+
+        try {
+            Files.write(Paths.get(fileName), data.getBytes(StandardCharsets.UTF_8));
+            Files.move(PathOgLocOFFile, PathDestinOfFile);
+            Files.copy(file, PathDestinOfFile, StandardCopyOption.REPLACE_EXISTING); // copy method should copy content of file at PathOGLocOFFile
+            // Files.move(PathOgLocOFFile, PathDestinOfFile);
+        } catch (IOException e) {
+            System.out.println(e);
+        }
+        return PathDestinOfFile;
+    }
+
+    public static void removeBLOB(Path BlobLOC){
+        try{
+            Files.delete(BlobLOC);
+        } catch (IOException e) {
+            System.out.println(e);
+        }
+    }
+    
+
 }
