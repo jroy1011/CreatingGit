@@ -247,6 +247,7 @@ public class CodingGit {
          return hexadecimalOfHash;
     }   
     catch (IOException e) {
+        System.out.println(e);
         return "error encountered";
             
     } catch (NoSuchAlgorithmException e) {
