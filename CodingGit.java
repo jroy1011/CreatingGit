@@ -6,9 +6,11 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.nio.file.StandardOpenOption;
 import java.nio.file.Path;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.stream.*;
 
 
 public class CodingGit {
@@ -276,20 +278,76 @@ public class CodingGit {
             Files.write(Paths.get(fileName), data.getBytes(StandardCharsets.UTF_8));
             Files.move(PathOgLocOFFile, PathDestinOfFile);
             Files.copy(file, PathDestinOfFile, StandardCopyOption.REPLACE_EXISTING); // copy method should copy content of file at PathOGLocOFFile
-            // Files.move(PathOgLocOFFile, PathDestinOfFile);
+            updateIndexFile(file);
+            Files.delete(PathOgLocOFFile); // deletes File created in first line
         } catch (IOException e) {
-            System.out.println(e);
+            //System.out.println(e);
         }
         return PathDestinOfFile;
     }
 
-    public static void removeBLOB(Path BlobLOC){
-        try{
+    public static void removeBLOB(Path BlobLOC) {
+        try {
             Files.delete(BlobLOC);
         } catch (IOException e) {
             System.out.println(e);
         }
     }
     
+    public static void updateIndexFile(Path filePath) {
+        String nameOfFile = filePath.getFileName().toString();
+        String hashOfFile = generateSHA1Hash(filePath);
+        String indexFileLoc = "\\home\\joyar\\HTCS_Projects\\CreatingGit\\git\\index";
+        String data = "";
+        try {
+            if (Files.size(Paths.get(indexFileLoc)) == 0) {
+                // data = hashOfFile + " " + nameOfFile;
+                data = hashOfFile + " " + filePath.toString();
+            } else {
+                //data = "\n" + hashOfFile + " " + nameOfFile;
+                data = "\n" + hashOfFile + " " + filePath.toString();
+            }
+            Files.write(Paths.get(indexFileLoc), data.getBytes(StandardCharsets.UTF_8), StandardOpenOption.APPEND);
+        } catch (IOException e) {
+            System.out.println(e);
+        }
+    }
+    // for stretch GP 2.4.2:
+    public static ArrayList<Path> AllJavaFilesInObj() {
+        // first, reading all files name in Objects folder using Files.list() method and Stream class
+        // putting all content into an array list 
+        Path objectsFolder = Paths.get("\\home\\joyar\\HTCS_Projects\\CreatingGit\\git\\objects");
+        ArrayList<Path> fileLocations = new ArrayList<Path>();
+        try {
+            Stream<Path> filesInsideObjFolder = Files.list(objectsFolder);
+            filesInsideObjFolder.forEach(line -> {
+                fileLocations.add(line);
+            });
+            filesInsideObjFolder.close();
+            //return fileLocations;
+        } catch (IOException e) {
+            System.out.println(e);
+        }
+         return fileLocations;
+    }
+
+    public static void removeAllIndexContent() {
+        String indexFileLoc = "\\home\\joyar\\HTCS_Projects\\CreatingGit\\git\\index";
+        try{
+        // first delete index file 
+        Files.delete(Paths.get(indexFileLoc));
+        // second create a new index file 
+        createIndexFile();
+    } catch (IOException e) {
+            System.out.println(e);
+        }
+    }
+    public static void removeObjFiles() {
+        ArrayList<Path> filesInObj = CodingGit.AllJavaFilesInObj();
+        for (int i = 0; i < filesInObj.size(); i++) {
+            removeBLOB(filesInObj.get(i));
+        }
+        removeAllIndexContent();
+    }
 
 }
