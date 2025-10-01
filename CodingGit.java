@@ -1,7 +1,8 @@
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.nio.File;
-import java.io.BufferedReader;
+import java.io.File;
+//import java.nio.File;
+//import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -12,9 +13,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.stream.*;
 
-
 public class CodingGit {
-    // first create InitalizeRepo method 
+    // first create InitalizeRepo method
     public static void InitializeRepo() {
 
         if (createGitFolder() == true) {
@@ -25,73 +25,11 @@ public class CodingGit {
                     }
                 }
             }
-        }        
-        //// first, create a folder called git 
-        // String GitdirectoryName = "git";
-        // Path GitPathDirName = Paths.get(GitdirectoryName);
-        // try {
-        //     Files.createDirectory(GitPathDirName);
-        // } catch (IOException e) {
-        //     e.printStackTrace();
-        // }
-
-        //// second create an objects folder inside git folder 
-        // Path pathSource = Paths.get("").toAbsolutePath();
-        // String pathSourceString = pathSource.toString() + "\\objects";
-        // Path finalPathSource = Paths.get(pathSourceString);
-
-        // String newLocation = "\\git\\objects";
-        // String StringFinalLocation = pathSource.toString() + newLocation;
-        // Path finalPathDestination = Paths.get(StringFinalLocation);
-
-        // String ObjectsDirectoryName = "objects";
-        // Path ObjectPathDirName = Paths.get(ObjectsDirectoryName);
-        // try{
-        //     Files.createDirectory(ObjectPathDirName);
-        //     Files.move(finalPathSource, finalPathDestination);
-        // } catch (IOException e) {
-        //     e.printStackTrace();
-        // }
-
-        //// Thrid creates index file called index in git folder
-        // String indexFileName = "index";
-        // String data = "";
-
-        // String FilesPathSource = Paths.get("").toAbsolutePath().toString();
-        // String FinalFilesStringPathSource = FilesPathSource  + "\\index";
-        // Path FinalFilesPathSource = Paths.get(FinalFilesStringPathSource);
-
-        // String FilesLocation = FilesPathSource + "\\git\\index";
-        // Path FinalFilesPathDestination = Paths.get(FilesLocation);
-
-        //  try {
-        //      Files.write(Paths.get(indexFileName), data.getBytes(StandardCharsets.UTF_8));
-        //      Files.move(FinalFilesPathSource, FinalFilesPathDestination);
-        //  } catch (IOException e) {
-        //      e.printStackTrace();
-        //  }
-
-        //// Fourth creates HEAD file in git folder 
-        // String headFileName = "HEAD";
-
-        // String HeadPathSource = Paths.get("").toAbsolutePath().toString();
-        // String FinalHeadStringPathSource = HeadPathSource + "\\HEAD";
-        // Path FinalHeadPathSource = Paths.get(FinalHeadStringPathSource);
-
-        // String HeadLocation = HeadPathSource + "\\git\\HEAD";
-        // Path FinalHeadPathDestination = Paths.get(HeadLocation);
-
-        // try{
-        //     Files.write(Paths.get(headFileName), data.getBytes(StandardCharsets.UTF_8));
-        //     Files.move(FinalHeadPathSource, FinalHeadPathDestination);
-        //     System.out.println("Hello");
-        // } catch (IOException e) {
-        //     e.printStackTrace();
-        // }
+        }
     }
-    
+
     public static boolean createGitFolder() {
-        // first, create a folder called git 
+        // first, create a folder called git
         boolean didItWork = false;
         String GitdirectoryName = "git";
         Path GitPathDirName = Paths.get(GitdirectoryName);
@@ -99,7 +37,7 @@ public class CodingGit {
             Files.createDirectory(GitPathDirName);
         } catch (IOException e) {
             System.out.println("Git Repository Already Exists.");
-           // e.printStackTrace();
+            // e.printStackTrace();
             return false;
         }
         didItWork = true;
@@ -107,67 +45,60 @@ public class CodingGit {
     }
 
     public static boolean createObjectsFolder() {
-        //// second create an objects folder inside git folder
+        // second create an objects folder inside git folder
         boolean didItWork = false;
-        Path pathSource = Paths.get("").toAbsolutePath();
-        String pathSourceString = pathSource.toString() + "\\objects";
-        Path finalPathSource = Paths.get(pathSourceString);
-
-        String newLocation = "\\git\\objects";
-        String StringFinalLocation = pathSource.toString() + newLocation;
+        
+        String newLocation = "git/objects";
+        String StringFinalLocation = newLocation;
         Path finalPathDestination = Paths.get(StringFinalLocation);
-
-        String ObjectsDirectoryName = "objects";
-        Path ObjectPathDirName = Paths.get(ObjectsDirectoryName);
+        
         try {
-            Files.createDirectory(ObjectPathDirName);
-            Files.move(finalPathSource, finalPathDestination);
+            Files.createDirectory(finalPathDestination);
         } catch (IOException e) {
             System.out.println("Git Repository Already Exists.");
-            //e.printStackTrace();
+            // e.printStackTrace();
             return false;
-            
+
         }
         didItWork = true;
         return didItWork;
     }
-    
-    public static boolean  createIndexFile() {
-        //// Thrid creates index file called index in git folder 
-         boolean didItWork = false;
-        String indexFileName = "index";
+
+    public static boolean createIndexFile() {
+        //// Thrid creates index file called index in git folder
+        boolean didItWork = false;
+        String indexFileName = "git/index";
         String data = "";
 
-        String FilesPathSource = Paths.get("").toAbsolutePath().toString();
-        String FinalFilesStringPathSource = FilesPathSource + "\\index";
-        Path FinalFilesPathSource = Paths.get(FinalFilesStringPathSource);
 
-        String FilesLocation = FilesPathSource + "\\git\\index";
-        Path FinalFilesPathDestination = Paths.get(FilesLocation);
+        // String FinalFilesStringPathSource = "git/index";
+        // Path FinalFilesPathSource = Paths.get(FinalFilesStringPathSource);
+
+        // String FilesLocation = "git/index";
+        // Path FinalFilesPathDestination = Paths.get(FilesLocation);
 
         try {
             Files.write(Paths.get(indexFileName), data.getBytes(StandardCharsets.UTF_8));
-            Files.move(FinalFilesPathSource, FinalFilesPathDestination);
         } catch (IOException e) {
             System.out.println("Git Repository Already Exists.");
-           // e.printStackTrace();
+            // e.printStackTrace();
             return false;
         }
         didItWork = true;
         return didItWork;
     }
-    
+
     public static boolean createHEADFile() {
-        //// Fourth creates HEAD file in git folder 
+        //// Fourth creates HEAD file in git folder
         boolean didItWork = false;
         String headFileName = "HEAD";
         String data = "";
 
-        String HeadPathSource = Paths.get("").toAbsolutePath().toString();
-        String FinalHeadStringPathSource = HeadPathSource + "\\HEAD";
+        
+        String FinalHeadStringPathSource = "HEAD";
         Path FinalHeadPathSource = Paths.get(FinalHeadStringPathSource);
 
-        String HeadLocation = HeadPathSource + "\\git\\HEAD";
+        String HeadLocation = "git/HEAD";
         Path FinalHeadPathDestination = Paths.get(HeadLocation);
 
         try {
@@ -181,52 +112,52 @@ public class CodingGit {
         didItWork = true;
         return didItWork;
     }
-    
+
     public static void RemoveHeadFile() {
-        // removes HEAD file 
-        String HEADlocation = "\\home\\joyar\\HTCS_Projects\\CreatingGit\\git\\HEAD";
+        // removes HEAD file
+        String HEADlocation = "git/HEAD";
         Path PathHEADLoc = Paths.get(HEADlocation);
-        try{
+        try {
             Files.delete(PathHEADLoc);
-        }catch  (IOException e){
+        } catch (IOException e) {
 
         }
     }
-    
+
     public static void RemoveIndexFile() {
-        // removes Index file 
-        String indexLocation = "\\home\\joyar\\HTCS_Projects\\CreatingGit\\git\\index";
+        // removes Index file
+        String indexLocation = "git/index";
         Path PathIndexLoc = Paths.get(indexLocation);
-        try{
-             Files.delete(PathIndexLoc);
-         } catch (IOException e) {
-            
+        try {
+            Files.delete(PathIndexLoc);
+        } catch (IOException e) {
+
         }
-       
+
     }
-    
+
     public static void RemoveObjFolder() {
         // removes Object folder
-        String objectsLocation = "\\home\\joyar\\HTCS_Projects\\CreatingGit\\git\\objects";
+        String objectsLocation = "git/objects";
         Path PathObjLoc = Paths.get(objectsLocation);
-        try{
-        Files.delete(PathObjLoc);
-    } catch (IOException e) {
-            
+        try {
+            Files.delete(PathObjLoc);
+        } catch (IOException e) {
+
         }
     }
 
     public static void RemoveGitFolder() {
         // removes Git folder
-        String gitlocation = "\\home\\joyar\\HTCS_Projects\\CreatingGit\\git";
+        String gitlocation = "git";
         Path PathGitLocation = Paths.get(gitlocation);
-        try{
-        Files.delete(PathGitLocation);
-    } catch (IOException e) {
-            
+        try {
+            Files.delete(PathGitLocation);
+        } catch (IOException e) {
+
         }
     }
-    
+
     public static void RemoveStuff() {
         CodingGit.RemoveHeadFile();
         CodingGit.RemoveIndexFile();
@@ -235,23 +166,23 @@ public class CodingGit {
     }
 
     public static String generateSHA1Hash(Path file) {
-        try{
-        // first convert all of file's content into bytes and put bytes into an array 
-        byte[] bytesOfFile = Files.readAllBytes(file);
-        // second hash all bytes 
-        MessageDigest SHA1 =  MessageDigest.getInstance("SHA-1");
-        byte[] hashedBytes = SHA1.digest(bytesOfFile); // hashes all the bytes and puts each part of hash into one index of array 
-        // third convert hash into hexadecimal 
-        //using helper method
-        String hexadecimalOfHash = hexademcialOfHash(hashedBytes);
-         return hexadecimalOfHash;
-    }   
-    catch (IOException e) {
-        return "error encountered";
-            
-    } catch (NoSuchAlgorithmException e) {
-        return "error encountered";
-    }
+        try {
+            // first convert all of file's content into bytes and put bytes into an array
+            byte[] bytesOfFile = Files.readAllBytes(file);
+            // second hash all bytes
+            MessageDigest SHA1 = MessageDigest.getInstance("SHA-1");
+            byte[] hashedBytes = SHA1.digest(bytesOfFile); // hashes all the bytes and puts each part of hash into one
+                                                           // index of array
+            // third convert hash into hexadecimal
+            // using helper method
+            String hexadecimalOfHash = hexademcialOfHash(hashedBytes);
+            return hexadecimalOfHash;
+        } catch (IOException e) {
+            return "error encountered";
+
+        } catch (NoSuchAlgorithmException e) {
+            return "error encountered";
+        }
 
     }
 
@@ -263,19 +194,28 @@ public class CodingGit {
         return hexOfHash.toString();
     }
 
-    public static Path createBLOB(Path file) {
-        // calculate SHA1 Hash of file & create a new file in the objects folder with the hash as its filename ad the content of that file 
+    public static Path createBLOB(Path file) throws IOException {
+        // calculate SHA1 Hash of file & create a new file in the objects folder with
+        // the hash as its filename ad the content of that file
         String fileName = generateSHA1Hash(file);
-        String data = "";
+        //SYDNEY ADDING CODE TO FIX BUGS WITH THEISS' PERMISSION
+            File hash = new File("git/objects/" + fileName);
+            if (hash.exists()) {
+                return Paths.get(hash.getPath());
+                }
+            Path sourcePath = Paths.get("./" + file); // Replace with your source file path
+            Path destinationPath = Paths.get(fileName + ""); // Replace with your desired new file path
+            // Copy the file, replacing if the destination exists
+            Files.copy(sourcePath, destinationPath, StandardCopyOption.REPLACE_EXISTING);
 
-        String ogLocOfFile = Paths.get("").toAbsolutePath().toString() + "\\" + fileName;
+        String ogLocOfFile = fileName;
         Path PathOgLocOFFile = Paths.get(ogLocOfFile);
 
-        String DestinOfFile = Paths.get("").toAbsolutePath().toString() + "\\git\\objects\\" + fileName;
+        String DestinOfFile = "git/objects/" + fileName;
         Path PathDestinOfFile = Paths.get(DestinOfFile);
 
         try {
-            Files.write(Paths.get(fileName), data.getBytes(StandardCharsets.UTF_8));
+            //Files.write(Paths.get(fileName), data.getBytes(StandardCharsets.UTF_8));
             Files.move(PathOgLocOFFile, PathDestinOfFile);
             Files.copy(file, PathDestinOfFile, StandardCopyOption.REPLACE_EXISTING); // copy method should copy content of file at PathOGLocOFFile
             updateIndexFile(file);
@@ -293,11 +233,11 @@ public class CodingGit {
             System.out.println(e);
         }
     }
-    
+
     public static void updateIndexFile(Path filePath) {
         String nameOfFile = filePath.getFileName().toString();
         String hashOfFile = generateSHA1Hash(filePath);
-        String indexFileLoc = "\\home\\joyar\\HTCS_Projects\\CreatingGit\\git\\index";
+        String indexFileLoc = "git/index";
         String data = "";
         try {
             if (Files.size(Paths.get(indexFileLoc)) == 0) {
@@ -310,11 +250,13 @@ public class CodingGit {
             System.out.println(e);
         }
     }
+
     // for stretch GP 2.4.2:
     public static ArrayList<Path> AllJavaFilesInObj() {
-        // first, reading all files name in Objects folder using Files.list() method and Stream class
-        // putting all content into an array list 
-        Path objectsFolder = Paths.get("\\home\\joyar\\HTCS_Projects\\CreatingGit\\git\\objects");
+        // first, reading all files name in Objects folder using Files.list() method and
+        // Stream class
+        // putting all content into an array list
+        Path objectsFolder = Paths.get("git/objects");
         ArrayList<Path> fileLocations = new ArrayList<Path>();
         try {
             Stream<Path> filesInsideObjFolder = Files.list(objectsFolder);
@@ -322,24 +264,25 @@ public class CodingGit {
                 fileLocations.add(line);
             });
             filesInsideObjFolder.close();
-            //return fileLocations;
+            // return fileLocations;
         } catch (IOException e) {
             System.out.println(e);
         }
-         return fileLocations;
+        return fileLocations;
     }
 
     public static void removeAllIndexContent() {
-        String indexFileLoc = "\\home\\joyar\\HTCS_Projects\\CreatingGit\\git\\index";
-        try{
-        // first delete index file 
-        Files.delete(Paths.get(indexFileLoc));
-        // second create a new index file 
-        createIndexFile();
-    } catch (IOException e) {
+        String indexFileLoc = "git/index";
+        try {
+            // first delete index file
+            Files.delete(Paths.get(indexFileLoc));
+            // second create a new index file
+            createIndexFile();
+        } catch (IOException e) {
             System.out.println(e);
         }
     }
+
     public static void removeObjFiles() {
         ArrayList<Path> filesInObj = CodingGit.AllJavaFilesInObj();
         for (int i = 0; i < filesInObj.size(); i++) {
