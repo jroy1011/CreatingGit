@@ -1,6 +1,7 @@
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.io.File;
+import java.io.FileWriter;
 //import java.nio.File;
 //import java.io.BufferedReader;
 import java.io.IOException;
@@ -47,11 +48,11 @@ public class CodingGit {
     public static boolean createObjectsFolder() {
         // second create an objects folder inside git folder
         boolean didItWork = false;
-        
+
         String newLocation = "git/objects";
         String StringFinalLocation = newLocation;
         Path finalPathDestination = Paths.get(StringFinalLocation);
-        
+
         try {
             Files.createDirectory(finalPathDestination);
         } catch (IOException e) {
@@ -69,7 +70,6 @@ public class CodingGit {
         boolean didItWork = false;
         String indexFileName = "git/index";
         String data = "";
-
 
         // String FinalFilesStringPathSource = "git/index";
         // Path FinalFilesPathSource = Paths.get(FinalFilesStringPathSource);
@@ -94,7 +94,6 @@ public class CodingGit {
         String headFileName = "HEAD";
         String data = "";
 
-        
         String FinalHeadStringPathSource = "HEAD";
         Path FinalHeadPathSource = Paths.get(FinalHeadStringPathSource);
 
@@ -198,15 +197,15 @@ public class CodingGit {
         // calculate SHA1 Hash of file & create a new file in the objects folder with
         // the hash as its filename ad the content of that file
         String fileName = generateSHA1Hash(file);
-        //SYDNEY ADDING CODE TO FIX BUGS WITH THEISS' PERMISSION
-            File hash = new File("git/objects/" + fileName);
-            if (hash.exists()) {
-                return Paths.get(hash.getPath());
-                }
-            Path sourcePath = Paths.get("./" + file); // Replace with your source file path
-            Path destinationPath = Paths.get(fileName + ""); // Replace with your desired new file path
-            // Copy the file, replacing if the destination exists
-            Files.copy(sourcePath, destinationPath, StandardCopyOption.REPLACE_EXISTING);
+        // SYDNEY ADDING CODE TO FIX BUGS WITH THEISS' PERMISSION
+        File hash = new File("git/objects/" + fileName);
+        if (hash.exists()) {
+            return Paths.get(hash.getPath());
+        }
+        Path sourcePath = Paths.get("./" + file); // Replace with your source file path
+        Path destinationPath = Paths.get(fileName + ""); // Replace with your desired new file path
+        // Copy the file, replacing if the destination exists
+        Files.copy(sourcePath, destinationPath, StandardCopyOption.REPLACE_EXISTING);
 
         String ogLocOfFile = fileName;
         Path PathOgLocOFFile = Paths.get(ogLocOfFile);
@@ -215,9 +214,9 @@ public class CodingGit {
         Path PathDestinOfFile = Paths.get(DestinOfFile);
 
         try {
-            //Files.write(Paths.get(fileName), data.getBytes(StandardCharsets.UTF_8));
             Files.move(PathOgLocOFFile, PathDestinOfFile);
-            Files.copy(file, PathDestinOfFile, StandardCopyOption.REPLACE_EXISTING); // copy method should copy content of file at PathOGLocOFFile
+            Files.copy(file, PathDestinOfFile, StandardCopyOption.REPLACE_EXISTING); // copy method should copy content
+                                                                                     // // of file at PathOGLocOFFile
             updateIndexFile(file);
             Files.delete(PathOgLocOFFile); // deletes File created in first line
         } catch (IOException e) {
@@ -235,17 +234,17 @@ public class CodingGit {
     }
 
     public static void updateIndexFile(Path filePath) {
-        String nameOfFile = filePath.getFileName().toString();
+        String nameOfFile = filePath.toString();
         String hashOfFile = generateSHA1Hash(filePath);
-        String indexFileLoc = "git/index";
+        String location = "git/index";
         String data = "";
         try {
-            if (Files.size(Paths.get(indexFileLoc)) == 0) {
+            if (Files.size(Paths.get(location)) == 0) {
                 data = hashOfFile + " " + nameOfFile;
             } else {
                 data = "\n" + hashOfFile + " " + nameOfFile;
             }
-            Files.write(Paths.get(indexFileLoc), data.getBytes(StandardCharsets.UTF_8), StandardOpenOption.APPEND);
+            Files.write(Paths.get(location), data.getBytes(StandardCharsets.UTF_8), StandardOpenOption.APPEND);
         } catch (IOException e) {
             System.out.println(e);
         }
@@ -289,6 +288,58 @@ public class CodingGit {
             removeBLOB(filesInObj.get(i));
         }
         removeAllIndexContent();
+    }
+
+    public static SavedFile[] fileArray(File root) throws IOException {
+        if (root.exists() && root.isDirectory()) {
+            File[] files = root.listFiles();
+            SavedFile[] savedFiles = new SavedFile[files.length];
+            for (int i = 0; i < files.length; i++) {
+                savedFiles[i] = new SavedFile(files[i]);
+            }
+            return savedFiles;
+        } else {
+            return null;
+        }
+    }
+
+    //returns sha1 of directory being sotred;
+    public static String treeFileToObj(File dir) throws IOException {
+        File f = new File("temp");
+        String data = "";
+        if (!f.exists()) {
+            f.createNewFile();
+        }
+        int lineCount = 0;
+        SavedFile[] fileArray = fileArray(dir);
+        if (dir.isDirectory()) {
+            String filePath = f + "";
+            FileWriter writer = new FileWriter(filePath, true);
+            for (int i = 0; i < fileArray.length; i++) {
+                if (lineCount == 0) {
+                    //KEY EXPLANATION: This method is recursive
+                    //"fileArray[i].getSha1()" calls the getSha1() a method in the SavedFile class which will actually call back THIS METHOD if the current file is a tree. So it stores that inner folder automatically and gets the sha1 for that folder
+                    data = fileArray[i].getType() + " " + fileArray[i].getSha1()
+                    + " " + fileArray[i].getFile().getName();
+                } else {
+                    data = "\n" + fileArray[i].getType() + " " + fileArray[i].getSha1() + " " + fileArray[i].getFile().getName();
+                }
+                writer.append(data);
+                lineCount++;
+            }
+            writer.close();
+        }
+        String sha1 = generateSHA1Hash(f.toPath());
+        File blob = new File("./git/objects/" + sha1);
+        if (!blob.exists()) {
+            blob.createNewFile();
+        }
+        Path sourcePath = Paths.get(f + ""); // Replace with your source file path
+        Path destinationPath = Paths.get(blob + ""); // Replace with your desired new file path
+        // Copy the file, replacing if the destination exists
+        Files.copy(sourcePath, destinationPath, StandardCopyOption.REPLACE_EXISTING);
+        f.delete();
+        return sha1;
     }
 
 }
