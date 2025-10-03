@@ -1,18 +1,9 @@
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-import java.io.File;
-import java.io.FileWriter;
-//import java.nio.File;
-//import java.io.BufferedReader;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
-import java.nio.file.StandardOpenOption;
-import java.nio.file.Path;
+import java.io.*;
+import java.nio.file.*;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.stream.*;
+import java.util.*;
+import java.util.stream.Stream;
+import java.security.*;
 
 public class CodingGit {
     // first create InitalizeRepo method
@@ -303,26 +294,30 @@ public class CodingGit {
         }
     }
 
-    //returns sha1 of directory being sotred;
-    public static String treeFileToObj(File dir) throws IOException {
+    // returns sha1 of directory being sotred;
+    public static String treeFileToObj(File index) throws IOException {
         File f = new File("temp");
+        File root = makeIndexTree(index);
         String data = "";
         if (!f.exists()) {
             f.createNewFile();
         }
         int lineCount = 0;
-        SavedFile[] fileArray = fileArray(dir);
-        if (dir.isDirectory()) {
+        SavedFile[] fileArray = fileArray(root);
+        if (root.isDirectory()) {
             String filePath = f + "";
             FileWriter writer = new FileWriter(filePath, true);
             for (int i = 0; i < fileArray.length; i++) {
                 if (lineCount == 0) {
-                    //KEY EXPLANATION: This method is recursive
-                    //"fileArray[i].getSha1()" calls the getSha1() a method in the SavedFile class which will actually call back THIS METHOD if the current file is a tree. So it stores that inner folder automatically and gets the sha1 for that folder
+                    // KEY EXPLANATION: This method is recursive
+                    // "fileArray[i].getSha1()" calls the getSha1() a method in the SavedFile class
+                    // which will actually call back THIS METHOD if the current file is a tree. So
+                    // it stores that inner folder automatically and gets the sha1 for that folder
                     data = fileArray[i].getType() + " " + fileArray[i].getSha1()
-                    + " " + fileArray[i].getFile().getName();
+                            + " " + fileArray[i].getFile().getName();
                 } else {
-                    data = "\n" + fileArray[i].getType() + " " + fileArray[i].getSha1() + " " + fileArray[i].getFile().getName();
+                    data = "\n" + fileArray[i].getType() + " " + fileArray[i].getSha1() + " "
+                            + fileArray[i].getFile().getName();
                 }
                 writer.append(data);
                 lineCount++;
@@ -340,6 +335,33 @@ public class CodingGit {
         Files.copy(sourcePath, destinationPath, StandardCopyOption.REPLACE_EXISTING);
         f.delete();
         return sha1;
+    }
+
+    public static File makeIndexTree(File index) throws IOException{
+        File root = new File("root");
+        if (!root.exists()) {
+            root.mkdir();
+        }
+        String filePath = "git/index"; 
+        BufferedReader reader = new BufferedReader(new FileReader(filePath));
+        String line;
+        while ((line = reader.readLine()) != null) {
+            String sha1 = line.substring(5, 45);
+            String path = line.substring(46);
+            //TO DO - MIGHT NOT NEED TO CHECK FOR SLASHES.. MAYBE PATH NAMES WILL WORK IT OUT?
+            if (!path.contains("/")) {
+                File f = new File(root + "/" + path);
+                if (!f.exists()) {
+                    f.createNewFile();
+                }
+            }
+            while(path.contains)
+
+        }
+        reader.close();
+
+
+        return root;
     }
 
 }
