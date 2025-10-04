@@ -41,6 +41,7 @@ public class CodingGitTester {
         Files.write(Paths.get("folder/sampleTest5"), data5.getBytes(StandardCharsets.UTF_8));
 
         // second, add enteries to the index file for each file... Create Blob
+
        
         CodingGit.createBLOB(pathOf2);
         CodingGit.createBLOB(pathOf2);
@@ -49,20 +50,23 @@ public class CodingGitTester {
         CodingGit.createBLOB(pathOf5);
 
 
-        File dir = new File("folder");
-        CodingGit.treeFileToObj(dir);
+        // File index = new File("git/index");
+        // if (!index.exists()) {
+        //     index.createNewFile();
+        // }
+        // CodingGit.treeFileToObj(index);
 
-        // Files.delete(pathOf2);
-        // Files.delete(pathOf3);
-        // Files.delete(pathOf4);
-        // Files.delete(pathOf5);
-        // Files.delete(folderpath2);
-        // Files.delete(folderpath);
+        Files.delete(pathOf2);
+        Files.delete(pathOf3);
+        Files.delete(pathOf4);
+        Files.delete(pathOf5);
+        Files.delete(folderpath2);
+        Files.delete(folderpath);
         
 
-        // // // for stretch GP 2.4.2
-        // CodingGit.removeObjFiles();
-        // CodingGit.RemoveStuff();
+        // // for stretch GP 2.4.2
+        CodingGit.removeObjFiles();
+        CodingGit.RemoveStuff();
 
     }
 }

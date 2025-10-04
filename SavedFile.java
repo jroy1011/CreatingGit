@@ -24,6 +24,18 @@ public class SavedFile {
         }
     }
 
+    public SavedFile(File f, String sha1) throws IOException {
+        path = f.getPath();
+        type = "";
+        this.f = f;
+        this.sha1 = sha1;
+        if (!f.isDirectory()) {
+            type = "blob";
+        } else {
+            type = "tree";
+        }
+    }
+
     public File getFile() {
         return f;
     }
