@@ -308,16 +308,15 @@ public class CodingGit {
             f.createNewFile();
         }
         int lineCount = 0;
+        // KEY EXPLANATION: This method is recursive
+        // when the fileArray(File) method intilizes a new SavedFile obj for a FOLDER, it calls THIS METHOD.
+        // it stores that inner folder automatically and gets the sha1 for that folder
         SavedFile[] fileArray = fileArray(root);
         if (root.isDirectory()) {
             String filePath = f + "";
             FileWriter writer = new FileWriter(filePath, true);
             for (int i = 0; i < fileArray.length; i++) {
                 if (lineCount == 0) {
-                    // KEY EXPLANATION: This method is recursive
-                    // "fileArray[i].getSha1()" calls the getSha1() a method in the SavedFile class
-                    // which will actually call back THIS METHOD if the current file is a tree. So
-                    // it stores that inner folder automatically and gets the sha1 for thatfolder
                     data = fileArray[i].getType() + " " + fileArray[i].getSha1()
                             + " " + fileArray[i].getFile().getName();
                 } else {
@@ -339,6 +338,7 @@ public class CodingGit {
         // Copy the file, replacing if the destination exists
         Files.copy(sourcePath, destinationPath, StandardCopyOption.REPLACE_EXISTING);
         f.delete();
+        root.delete();
         return sha1;
     }
 
