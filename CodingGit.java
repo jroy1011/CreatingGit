@@ -287,16 +287,22 @@ public class CodingGit {
             for (int i = 0; i < files.length; i++) {
                 savedFiles[i] = new SavedFile(files[i]);
             }
+            //savedFiles[files.length] = new SavedFile(root);
             return savedFiles;
         } else {
-            return null;
+            SavedFile[] savedFiles = new SavedFile[1];
+            savedFiles[0] = new SavedFile(root);
+            return savedFiles;
         }
     }
 
-    // returns sha1 of directory being sotred;
     public static String treeFileToObj(File index) throws IOException {
+       return treeFileToObj(index, makeIndexTree(index));
+    }
+
+    // returns sha1 of directory being sorted;
+    public static String treeFileToObj(File index, File root) throws IOException {
         File f = new File("temp");
-        File root = makeIndexTree(index);
         String data = "";
         if (!f.exists()) {
             f.createNewFile();

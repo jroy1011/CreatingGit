@@ -20,7 +20,11 @@ public class SavedFile {
             sha1 = CodingGit.generateSHA1Hash(Paths.get(path));
         } else {
             type = "tree";
-            sha1 = CodingGit.treeFileToObj(f);
+            File index = new File("git/index");
+            if (!index.exists()) {
+                index.createNewFile();
+            }
+            sha1 = CodingGit.treeFileToObj(index, f);
         }
     }
 
