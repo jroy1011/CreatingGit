@@ -50,11 +50,11 @@ public class CodingGitTester {
         CodingGit.createBLOB(pathOf5);
 
 
-        // File index = new File("git/index");
-        // if (!index.exists()) {
-        //     index.createNewFile();
-        // }
-        // CodingGit.treeFileToObj(index);
+        File index = new File("git/index");
+        if (!index.exists()) {
+            index.createNewFile();
+        }
+        CodingGit.treeFileToObj(index);
 
         Files.delete(pathOf2);
         Files.delete(pathOf3);

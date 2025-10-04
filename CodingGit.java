@@ -161,8 +161,7 @@ public class CodingGit {
             byte[] bytesOfFile = Files.readAllBytes(file);
             // second hash all bytes
             MessageDigest SHA1 = MessageDigest.getInstance("SHA-1");
-            byte[] hashedBytes = SHA1.digest(bytesOfFile); // hashes all the bytes and puts each part of hash into one
-                                                           // index of array
+            byte[] hashedBytes = SHA1.digest(bytesOfFile); // hashes all the bytes and puts each part of hash into one index of array
             // third convert hash into hexadecimal
             // using helper method
             String hexadecimalOfHash = hexademcialOfHash(hashedBytes);
@@ -294,25 +293,6 @@ public class CodingGit {
         }
     }
 
-    // public static SavedFile[] fileArray(File index) throws IOException {
-    // String filePath = index + "";
-    // BufferedReader reader = new BufferedReader(new FileReader(filePath));
-    // Stream<String> lines = Files.lines(Paths.get(filePath));
-    // int lineCount = (int) lines.count();
-    // lines.close();
-    // SavedFile[] savedFiles = new SavedFile[lineCount];
-    // String line;
-    // int i = 0;
-    // while ((line = reader.readLine()) != null) {
-    // String sha1 = line.substring(0, 40);
-    // String path = line.substring(41);
-    // File f = new File(path);
-    // savedFiles[i] = new SavedFile(f, sha1);
-    // }
-    // reader.close();
-    // return savedFiles;
-    // }
-
     // returns sha1 of directory being sotred;
     public static String treeFileToObj(File index) throws IOException {
         File f = new File("temp");
@@ -356,52 +336,6 @@ public class CodingGit {
         return sha1;
     }
 
-    // public static String treeFileToObj(File index) throws IOException {
-    // File f = new File("temp");
-    // // File root = makeIndexTree(index);
-    // String data = "";
-    // if (!f.exists()) {
-    // f.createNewFile();
-    // }
-    // int lineCount = 0;
-    // SavedFile[] fileArray = fileArray(index);
-
-    // String filePath = f + "";
-    // FileWriter writer = new FileWriter(filePath, true);
-    // for (int i = 0; i < fileArray.length; i++) {
-    // // KEY EXPLANATION: This method is recursive
-    // // "fileArray[i].getSha1()" calls the getSha1() a method in the SavedFile
-    // class
-    // // which will actually call back THIS METHOD if the current file is a tree.
-    // So
-    // // it stores that inner folder automatically and gets the sha1 for that
-    // folder
-    // if (lineCount == 0) {
-    // data = fileArray[i].getType() + " " + fileArray[i].getSha1()
-    // + " " + fileArray[i].getFile().getName();
-    // } else {
-    // data = "\n" + fileArray[i].getType() + " " + fileArray[i].getSha1() + " "
-    // + fileArray[i].getFile().getName();
-    // }
-    // writer.append(data);
-    // lineCount++;
-    // }
-    // writer.close();
-
-    // String sha1 = generateSHA1Hash(f.toPath());
-    // File blob = new File("./git/objects/" + sha1);
-    // if (!blob.exists()) {
-    // blob.createNewFile();
-    // }
-    // Path sourcePath = Paths.get(f + ""); // Replace with your source file path
-    // Path destinationPath = Paths.get(blob + ""); // Replace with your desired new
-    // file path
-    // // Copy the file, replacing if the destination exists
-    // Files.copy(sourcePath, destinationPath, StandardCopyOption.REPLACE_EXISTING);
-    // f.delete();
-    // return sha1;
-    // }
-
     public static File makeIndexTree(File index) throws IOException {
         File root = new File("root");
         if (!root.exists()) {
@@ -414,15 +348,18 @@ public class CodingGit {
             String sha1 = line.substring(0, 40);
             String path = line.substring(41);
             int slashInd = path.indexOf("/");
-            String above = root.toString();
+            //String above = root.toString();
             while (slashInd > -1) {
-                File folder = new File(above + "/" + path.substring(0, slashInd));
+                File folder = new File(root + "/" + path.substring(0, slashInd));
                 if (!folder.exists()) {
                     folder.mkdir();
                 }
                 String newPath = path.substring(slashInd + 1);
-                slashInd = newPath.indexOf("/");
-                above = folder.getPath().toString();
+                slashInd = slashInd + newPath.indexOf("/") + 1;
+                if (newPath.indexOf("/") == -1) {
+                    slashInd = -1;
+                }
+                //above = folder.getPath().toString();
             }
             File f = new File(root + "/" + path);
             if (!f.exists()) {
