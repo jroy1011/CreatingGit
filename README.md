@@ -19,3 +19,9 @@ second, I imported the MessageDigest class so that I could create an object (in 
 third, I used the digest() method to hash what was in the byte array and I put this content into a new array called hashedBytes. 
 I then created a helper method called hexadecimalOfHash that takes the hash just created and returns a hexadecimal version of it. 
 HexadecimalOfHash helper method: I had to use the internet to figure out how to do this. Essentially, I use String Builder and the .format() method as well as "%02x" to get a hexadecimal version of what has been hasehd 
+
+Sydney's add-ons: Staging Trees
+The SavedFile class is essentially just a File class that stores the file itself, sha1, type (blob or tree), and path of the file. This is especially helpful because you can call getSha1 on a folder and get the value returned to you. This is because the constructor calls the treeFileToOnjHelper(root) method which returns the sha1 of the folder it is staging
+makeIndexTree(index) reads index and adds COPIES all files in the same structure all within a folder called root
+treeFileToObj(index) calls treeFileToObjHelper(index,root), using the root folder made by makeIndexTree(index)
+treeFileToObjHelper(index,root) calls the fileArray(root) method and BOTH ARE RECURSIVE which is hard to see, but when a SavedFile obj is initialized in fileArray(root), the SavedFile constructor calls treeFileToObjHelper, which calls fileArray(root). This recursion only happens when dealing with folders, so files are basically the base case

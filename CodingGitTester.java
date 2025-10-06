@@ -1,3 +1,4 @@
+import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -5,131 +6,68 @@ import java.nio.file.Paths;
 import java.nio.file.Path;
 
 public class CodingGitTester {
-    public static void main(String[] args) {
-            CodingGit.InitializeRepo();
-            //    CodingGit.createGitFolder();
-            //    CodingGit.createObjectsFolder();
-            //     CodingGit.createIndexFile();
-            //      CodingGit.createHEADFile();
+    public static void main(String[] args) throws IOException {
 
-            // // Stretch challenge 1: 
-            // // check if stuff exists
-            // String gitlocation = "\\home\\joyar\\HTCS_Projects\\CreatingGit\\git";
-            // Path PathGitLocation = Paths.get(gitlocation);
-            // if (Files.notExists(PathGitLocation)) {
-            //     System.out.println("git folder does not exist!");
-            // }
+        CodingGit.InitializeRepo();
 
-            // String objectsLocation = "\\home\\joyar\\HTCS_Projects\\CreatingGit\\git\\objects";
-            // Path PathObjLoc = Paths.get(objectsLocation);
-            // if (Files.notExists(PathObjLoc)) {
-            //     System.out.println("objects folder does not exist!");
-            // }
-
-            // String indexLocation = "\\home\\joyar\\HTCS_Projects\\CreatingGit\\git\\index";
-            // Path PathIndexLoc = Paths.get(indexLocation);
-            // if (Files.notExists(PathIndexLoc)) {
-            //     System.out.println("index file does not exist!");
-            // }
-
-            // String HEADlocation = "\\home\\joyar\\HTCS_Projects\\CreatingGit\\git\\HEAD";
-            // Path PathHEADLoc = Paths.get(HEADlocation);
-            // if (Files.notExists(PathHEADLoc)) {
-            //     System.out.println("HEAD file does not exist!");
-            // }
-
-            // // implement remove methods
-
-            // for (int i = 0; i < 4; i++) {
-            //     CodingGit.RemoveStuff();
-            //     if (Files.notExists(PathGitLocation)) {
-            //         System.out.println("git folder does not exist!");
-            //     }
-            //      if (Files.notExists(PathObjLoc)) {
-            //     System.out.println("objects folder does not exist!");
-            // }
-            //     if (Files.notExists(PathIndexLoc)) {
-            //         System.out.println("index file does not exist!");
-            //     }
-            //     if (Files.notExists(PathHEADLoc)) {
-            //         System.out.println("HEAD file does not exist!");
-            //     }
-            //     CodingGit.InitializeRepo();
-            // }
-            // if (Files.notExists(PathGitLocation)) {
-            //     System.out.println("git folder does not exist!");
-            // }
-            // if (Files.notExists(PathObjLoc)) {
-            //     System.out.println("objects folder does not exist!");
-            // }
-            // if (Files.notExists(PathIndexLoc)) {
-            //     System.out.println("index file does not exist!");
-            // }
-            //  if (Files.notExists(PathHEADLoc)) {
-            //     System.out.println("HEAD file does not exist!");
-            // }
-
-            // // testing SHA1 hash method 
-            // String fileLOC = "\\home\\joyar\\HTCS_Projects\\CreatingGit\\SampleTest1.txt";
-            // Path pathOfFile = Paths.get(fileLOC);
-            // System.out.println(CodingGit.generateSHA1Hash(pathOfFile));
-
-            // // testing CreateBlob 
-            //CodingGit.createBLOB(pathOfFile);
-
-            // // Stretch challenges GP - 2.3.1
-            // // progrmatically confirm that BLOB file exists in Objects folder 
-
-            // Path BlobFilePath = CodingGit.createBLOB(pathOfFile);
-            // if (Files.notExists(BlobFilePath)) {
-            //     System.out.println("Blob file is NOT in objects folder");
-            // }
-            // //Implement a method to reset the files used in your tester to repeatedly test again.
-            // CodingGit.removeBLOB(BlobFilePath);
-            // if (Files.notExists(BlobFilePath)) {
-            //     System.out.println("Blob file is NOT in objects folder");
-            // }
-
-            // // repeatedly testing 
-            // for (int i = 0; i < 3; i++) {
-            //     CodingGit.createBLOB(pathOfFile);
-            //     if (Files.notExists(BlobFilePath)) {
-            //         System.out.println("Blob file is NOT in objects folder");
-            //     }
-            //     CodingGit.removeBLOB(BlobFilePath);
-            //     if (Files.notExists(BlobFilePath)) {
-            //         System.out.println("Blob file is NOT in objects folder");
-            //     }
-            // }
-            // System.out.println("Blob file should not be in objects folder:");
-            // if (Files.notExists(BlobFilePath)) {
-            //     System.out.println("Blob file is NOT in objects folder");
-            // }
-
-            // Stretch challenge 1 for G.P 2.4: creating multiple test files
-            // first, create a set of sample text files with different content 
-            try{
-            String data = "SampleTest2 content";
-            Files.write(Paths.get("sampleTest2"), data.getBytes(StandardCharsets.UTF_8));
-            Path pathOf2 = Paths.get("\\home\\joyar\\HTCS_Projects\\CreatingGit\\sampleTest2");
-            String data3 = "SampleTest3 content";
-            Path pathOf3 = Paths.get("\\home\\joyar\\HTCS_Projects\\CreatingGit\\sampleTest3");
-            Files.write(Paths.get("sampleTest3"),data3.getBytes(StandardCharsets.UTF_8));
-            String data4 = "SampleTest4 content";
-            Path pathOf4 = Paths.get("\\home\\joyar\\HTCS_Projects\\CreatingGit\\sampleTest4");
-            Files.write(Paths.get("sampleTest4"), data4.getBytes(StandardCharsets.UTF_8));
-            // second, add enteries to the index file for each file... Create Blob
-            CodingGit.createBLOB(pathOf2);
-            CodingGit.createBLOB(pathOf3);
-            CodingGit.createBLOB(pathOf4);
-        } catch (IOException e) {
+        // first, create a set of sample text files with different content
+        //The structure is: files 2 and 3 are on their own, then folder stores folder2 and file 5, and folder2 stores file 4
+       
+        String data = "Hi, welcome to sampleTest2! The dirty secret is: Sydney brought a snack to class today and is eating it under her desk. DO NOT tell Mr. Theiss ;)";
+        Files.write(Paths.get("sampleTest2"), data.getBytes(StandardCharsets.UTF_8));
+        Path pathOf2 = Paths.get("sampleTest2");
+        String data3 = "This is sampleTest3. I'm only a few minutes old, but some things about me: I love dogs, and ice cream, but absolutely hate cats and frozen yogurt.";
+        Path pathOf3 = Paths.get("sampleTest3");
+        Files.write(Paths.get("sampleTest3"), data3.getBytes(StandardCharsets.UTF_8));
+        String data4 = "SampleTest4 content is not as fun as the others";
+        String data5 = "SampleTest5 is the best test!! Or at least that's what Sydney thinks who made this tester :)";
+       
+        
+        File folder = new File("folder");
+        if (!folder.exists()) {
+            folder.mkdir();
         }
+        Path folderpath = Paths.get("folder");
 
-    
-        // third, check if the index entries using the sha1 generator website  match the hash name
+        File folder2 = new File("folder/folder2");
+        if (!folder2.exists()) {
+            folder2.mkdir();
+        }
+        Path folderpath2 = Paths.get("folder/folder2");
+        
+        Path pathOf4 = Paths.get("folder/folder2/sampleTest4");
+        Files.write(Paths.get("folder/folder2/sampleTest4"), data4.getBytes(StandardCharsets.UTF_8));
+        Path pathOf5 = Paths.get("folder/sampleTest5");
+        Files.write(Paths.get("folder/sampleTest5"), data5.getBytes(StandardCharsets.UTF_8));
 
-        // for stretch GP 2.4.2
+        // second, add enteries to the index file for each file... Create Blob
+
+       
+        CodingGit.createBLOB(pathOf2);
+        CodingGit.createBLOB(pathOf2);
+        CodingGit.createBLOB(pathOf3);
+        CodingGit.createBLOB(pathOf4);
+        CodingGit.createBLOB(pathOf5);
+
+
+        File index = new File("git/index");
+        if (!index.exists()) {
+            index.createNewFile();
+        }
+        CodingGit.treeFileToObj(index);
+        
+        //COMMENT OUT ALL FOLLOWING LINES FOR RUNNING AND SEEING IF THINGS WORK, THEN UNCOMMENT TO REFRESH AND DELETE EVERYTHING
+        Files.delete(pathOf2);
+        Files.delete(pathOf3);
+        Files.delete(pathOf4);
+        Files.delete(pathOf5);
+        Files.delete(folderpath2);
+        Files.delete(folderpath);
+        
+
+        // // for stretch GP 2.4.2
         CodingGit.removeObjFiles();
+        CodingGit.RemoveStuff();
 
     }
 }
