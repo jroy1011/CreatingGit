@@ -297,11 +297,11 @@ public class CodingGit {
     }
 
     public static String treeFileToObj(File index) throws IOException {
-       return treeFileToObj(index, makeIndexTree(index));
+       return treeFileToObjHelper(makeIndexTree(index));
     }
 
     // returns sha1 of directory being sorted;
-    public static String treeFileToObj(File index, File root) throws IOException {
+    public static String treeFileToObjHelper(File root) throws IOException {
         File f = new File("temp");
         String data = "";
         if (!f.exists()) {
@@ -338,8 +338,21 @@ public class CodingGit {
         // Copy the file, replacing if the destination exists
         Files.copy(sourcePath, destinationPath, StandardCopyOption.REPLACE_EXISTING);
         f.delete();
-        root.delete();
+        deleteDir(root);
         return sha1;
+    }
+
+    public static void deleteDir(File dir) {
+        if (dir.exists() && dir.isDirectory()) {
+            File[] files = dir.listFiles();
+            for (int i = 0; i < files.length; i++) {
+                files[i].delete();
+                if (files[i].isDirectory()) {
+                    deleteDir(files[i]);
+                }
+            }
+            dir.delete();
+        }
     }
 
     public static File makeIndexTree(File index) throws IOException {

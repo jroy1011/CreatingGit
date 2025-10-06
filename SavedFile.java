@@ -24,7 +24,7 @@ public class SavedFile {
             if (!index.exists()) {
                 index.createNewFile();
             }
-            sha1 = CodingGit.treeFileToObj(index, f);
+            sha1 = CodingGit.treeFileToObjHelper(f);
         }
     }
 

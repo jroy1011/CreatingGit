@@ -55,7 +55,8 @@ public class CodingGitTester {
             index.createNewFile();
         }
         CodingGit.treeFileToObj(index);
-
+        
+        //COMMENT OUT ALL FOLLOWING LINES FOR RUNNING AND SEEING IF THINGS WORK, THEN UNCOMMENT TO REFRESH AND DELETE EVERYTHING
         Files.delete(pathOf2);
         Files.delete(pathOf3);
         Files.delete(pathOf4);
